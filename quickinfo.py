@@ -59,7 +59,7 @@ async def handle_new_message(event):
             "💎 <b>Features:</b>\n"
             "✅ Supports users, bots, groups & channels\n"
             "⚡ Fast and reliable\n\n"
-            "<blockquote>🛠 Made with ❤️ by @TheSmartDev</blockquote>"
+            "<blockquote>🛠 Made with ❤️ by @ItsSmartDev</blockquote>"
         )
 
        
