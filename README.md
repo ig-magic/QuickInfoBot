@@ -24,16 +24,16 @@
 Before you begin, ensure you have met the following requirements:
 
 - Python 3.8 or higher.
-- `pyrofork` librarie.
+- `telethon` librarie.
 - A Telegram bot token (you can get one from [@BotFather](https://t.me/BotFather) on Telegram).
 - API ID and Hash: You can get these by creating an application on [my.telegram.org](https://my.telegram.org).
 
 ## Installation
 
-To install `pyrofork` run the following command:
+To install `telethon` run the following command:
 
 ```bash
-pip install pyrofork
+pip install telethon
 ```
 
 **Note: If you previously installed `pyrogram`, uninstall it before installing `pyrofork`.**
