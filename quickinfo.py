@@ -60,7 +60,7 @@ async def handle_new_message(event):
             "1️⃣ Click the buttons below to share a chat or user.\n"
             "2️⃣ Receive the unique ID instantly.\n\n"
             "💎 <b>Features:</b>\n"
-            "✅ Supports users, bots, groups & channels\n"
+            "✅ Supports users, bots, groups, channels, and your owned or admin chats\n"
             "⚡ Fast and reliable\n\n"
             "<blockquote>🛠 Made with ❤️ by @ItsSmartDev</blockquote>"
         )
@@ -78,6 +78,12 @@ async def handle_new_message(event):
                     button_id=6,
                     peer_type=RequestPeerTypeUser(bot=True),
                     max_quantity=1
+                ),
+                KeyboardButtonRequestPeer(
+                    text='🌟 Premium User',
+                    button_id=7,
+                    peer_type=RequestPeerTypeUser(premium=True),
+                    max_quantity=1
                 )
             ],
             [
@@ -92,27 +98,45 @@ async def handle_new_message(event):
                     button_id=3,
                     peer_type=RequestPeerTypeBroadcast(has_username=True),
                     max_quantity=1
-                )
-            ],
-            [
+                ),
                 KeyboardButtonRequestPeer(
                     text='🔒 Private Group',
                     button_id=4,
                     peer_type=RequestPeerTypeChat(has_username=False),
                     max_quantity=1
-                ),
+                )
+            ],
+            [
                 KeyboardButtonRequestPeer(
                     text='🌐 Public Group',
                     button_id=5,
                     peer_type=RequestPeerTypeChat(has_username=True),
                     max_quantity=1
+                ),
+                KeyboardButtonRequestPeer(
+                    text='📢 Your Channel',
+                    button_id=8,
+                    peer_type=RequestPeerTypeBroadcast(creator=True),
+                    max_quantity=1
+                ),
+                KeyboardButtonRequestPeer(
+                    text='👥 Your Group',
+                    button_id=9,
+                    peer_type=RequestPeerTypeChat(creator=True),
+                    max_quantity=1
                 )
             ],
             [
                 KeyboardButtonRequestPeer(
-                    text='🌟 Premium User',
-                    button_id=7,
-                    peer_type=RequestPeerTypeUser(premium=True),
+                    text='📢 Channels You Admin',
+                    button_id=10,
+                    peer_type=RequestPeerTypeBroadcast(user_admin_rights=ChatAdminRights(change_info=True)),
+                    max_quantity=1
+                ),
+                KeyboardButtonRequestPeer(
+                    text='👥 Groups You Admin',
+                    button_id=11,
+                    peer_type=RequestPeerTypeChat(user_admin_rights=ChatAdminRights(change_info=True)),
                     max_quantity=1
                 )
             ]
@@ -157,88 +181,12 @@ async def handle_new_message(event):
         except Exception as e:
             logging.error(f"Failed to send /me response: {str(e)}")
 
-    elif text == '/my':
-        logging.info("Processing /my command")
-        keyboard = [
-            [
-                KeyboardButtonRequestPeer(
-                    text='📢 Your Channel',
-                    button_id=8,
-                    peer_type=RequestPeerTypeBroadcast(creator=True),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='👥 Your Group',
-                    button_id=9,
-                    peer_type=RequestPeerTypeChat(creator=True),
-                    max_quantity=1
-                )
-            ]
-        ]
-
-        reply_markup = ReplyKeyboardMarkup(
-            rows=[KeyboardButtonRow(buttons=row) for row in keyboard],
-            resize=True,
-            single_use=False
-        )
-
-        try:
-            await client.send_message(
-                chat_id,
-                "Please select a channel or group where you are the owner:",
-                parse_mode='html',
-                link_preview=False,
-                buttons=reply_markup
-            )
-            logging.info("Sent /my message with keyboard")
-        except Exception as e:
-            logging.error(f"Failed to send /my message: {str(e)}")
-
-    elif text == '/admins':
-        logging.info("Processing /admins command")
-        keyboard = [
-            [
-                KeyboardButtonRequestPeer(
-                    text='📢 Channels You Admin',
-                    button_id=10,
-                    peer_type=RequestPeerTypeBroadcast(user_admin_rights=ChatAdminRights(change_info=True)),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='👥 Groups You Admin',
-                    button_id=11,
-                    peer_type=RequestPeerTypeChat(user_admin_rights=ChatAdminRights(change_info=True)),
-                    max_quantity=1
-                )
-            ]
-        ]
-
-        reply_markup = ReplyKeyboardMarkup(
-            rows=[KeyboardButtonRow(buttons=row) for row in keyboard],
-            resize=True,
-            single_use=False
-        )
-
-        try:
-            await client.send_message(
-                chat_id,
-                "Please select a channel or group where you are an admin:",
-                parse_mode='html',
-                link_preview=False,
-                buttons=reply_markup
-            )
-            logging.info("Sent /admins message with keyboard")
-        except Exception as e:
-            logging.error(f"Failed to send /admins message: {str(e)}")
-
     elif text == '/help':
         logging.info("Processing /help command")
         help_text = (
             "<b>Available Commands:</b>\n\n"
-            "<b>/start</b> - Start the bot and get the main menu with options to fetch IDs.\n"
+            "<b>/start</b> - Start the bot and get the main menu with options to fetch IDs for users, bots, groups, channels, and your owned or admin chats.\n"
             "<b>/me</b> - Get your own Telegram user ID.\n"
-            "<b>/my</b> - View your owned channels and groups.\n"
-            "<b>/admins</b> - View channels and groups where you are an admin.\n"
             "<b>/help</b> - Show this help message with command explanations."
         )
         try:
