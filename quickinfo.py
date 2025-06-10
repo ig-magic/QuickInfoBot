@@ -3,298 +3,240 @@ Author: Bisnu Ray
 Telegram: https://t.me/SmartBisnuBio
 """
 
-import logging
-from telethon import TelegramClient, events, utils
-from telethon.tl.types import (
-    KeyboardButtonRequestPeer, ReplyKeyboardMarkup, KeyboardButtonRow,
-    RequestPeerTypeUser, RequestPeerTypeChat, RequestPeerTypeBroadcast,
-    UpdateNewMessage, MessageService,
-    RequestedPeerUser, RequestedPeerChat, RequestedPeerChannel,
-    PeerUser, PeerChat, PeerChannel, User, Chat, Channel,
-    ChatAdminRights
-)
-from config import API_ID, API_HASH, BOT_TOKEN
-
-TYPES = {
-    1: {'name': '👤 User'},
-    2: {'name': '🔒 Private Channel'},
-    3: {'name': '🌐 Public Channel'},
-    4: {'name': '🔒 Private Group'},
-    5: {'name': '🌐 Public Group'},
-    6: {'name': '🤖 Bot'},
-    7: {'name': '🌟 Premium User'},
-    8: {'name': '📢 Your Channel'},
-    9: {'name': '👥 Your Group'},
-    10: {'name': '📢 Channels You Admin'},
-    11: {'name': '👥 Groups You Admin'}
-}
-
-# Set up logging
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler('error.log'),
-        logging.StreamHandler()
-    ]
+from pyrogram import Client, filters
+from pyrogram.enums import ParseMode
+from pyrogram.types import (
+    KeyboardButton,
+    ReplyKeyboardMarkup,
+    RequestPeerTypeChat,
+    RequestPeerTypeUser,
+    RequestPeerTypeChannel
 )
 
-client = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN)
+from config import (
+    API_ID,
+    API_HASH,
+    BOT_TOKEN
+)
 
-@client.on(events.NewMessage)
-async def handle_new_message(event):
-    message = event.message
-    chat_id = event.chat_id
-    text = message.text
-    sender = await event.get_sender()
+bot = Client(
+    "quickinfo",
+    api_id=API_ID,
+    api_hash=API_HASH,
+    bot_token=BOT_TOKEN,
+    parse_mode=ParseMode.HTML
+)
 
-    # Log every incoming message
-    logging.info(f"Received NewMessage: text='{text}', chat_id={chat_id}, message={message}")
-
-    if text == '/start':
-        logging.info("Processing /start command")
-        welcome_text = (
-            "👋 <b>Welcome to Chat ID Finder Bot!</b> 🆔\n\n"
-            "✅ <b>Fetch Any Chat ID Instantly!</b>\n\n"
-            "🔧 <b>How to Use?</b>\n"
-            "1️⃣ Click the buttons below to share a chat or user.\n"
-            "2️⃣ Receive the unique ID instantly.\n\n"
-            "💎 <b>Features:</b>\n"
-            "✅ Supports users, bots, groups, channels, and your owned or admin chats\n"
-            "⚡ Fast and reliable\n\n"
-            "<blockquote>🛠 Made with ❤️ by @ItsSmartDev</blockquote>"
-        )
-
-        keyboard = [
-            [
-                KeyboardButtonRequestPeer(
-                    text='👤 User',
+menu_buttons = ReplyKeyboardMarkup(
+    [
+        [
+            KeyboardButton(
+                "👤 Users",
+                request_user=RequestPeerTypeUser(
                     button_id=1,
-                    peer_type=RequestPeerTypeUser(bot=False),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='🤖 Bot',
-                    button_id=6,
-                    peer_type=RequestPeerTypeUser(bot=True),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='🌟 Premium User',
-                    button_id=7,
-                    peer_type=RequestPeerTypeUser(premium=True),
-                    max_quantity=1
+                    is_bot=False,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
                 )
-            ],
-            [
-                KeyboardButtonRequestPeer(
-                    text='🔒 Private Channel',
+            ),
+            KeyboardButton(
+                "🤖 Bots",
+                request_user=RequestPeerTypeUser(
                     button_id=2,
-                    peer_type=RequestPeerTypeBroadcast(has_username=False),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='🌐 Public Channel',
-                    button_id=3,
-                    peer_type=RequestPeerTypeBroadcast(has_username=True),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='🔒 Private Group',
+                    is_bot=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            ),
+            KeyboardButton(
+                "🔒 Private Channel",
+                request_chat=RequestPeerTypeChannel(
                     button_id=4,
-                    peer_type=RequestPeerTypeChat(has_username=False),
-                    max_quantity=1
+                    is_username=False,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
                 )
-            ],
-            [
-                KeyboardButtonRequestPeer(
-                    text='🌐 Public Group',
+            )
+        ],
+        [
+            KeyboardButton(
+                " 🌐Public Channel",
+                request_chat=RequestPeerTypeChannel(
                     button_id=5,
-                    peer_type=RequestPeerTypeChat(has_username=True),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='📢 Your Channel',
+                    is_username=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            ),
+            KeyboardButton(
+                "🔒 Private Group",
+                request_chat=RequestPeerTypeChat(
+                    button_id=6,
+                    is_username=False,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            ),
+            KeyboardButton(
+                "🌐 Public Group",
+                request_chat=RequestPeerTypeChat(
+                    button_id=7,
+                    is_username=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            )
+        ],
+        [
+            KeyboardButton(
+                "👥 Your Groups",
+                request_chat=RequestPeerTypeChat(
                     button_id=8,
-                    peer_type=RequestPeerTypeBroadcast(creator=True),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='👥 Your Group',
+                    is_creator=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            ),
+            KeyboardButton(
+                "🌟 Your Channels",
+                request_chat=RequestPeerTypeChannel(
                     button_id=9,
-                    peer_type=RequestPeerTypeChat(creator=True),
-                    max_quantity=1
+                    is_creator=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
                 )
-            ],
-            [
-                KeyboardButtonRequestPeer(
-                    text='📢 Channels You Admin',
-                    button_id=10,
-                    peer_type=RequestPeerTypeBroadcast(user_admin_rights=ChatAdminRights(change_info=True)),
-                    max_quantity=1
-                ),
-                KeyboardButtonRequestPeer(
-                    text='👥 Groups You Admin',
-                    button_id=11,
-                    peer_type=RequestPeerTypeChat(user_admin_rights=ChatAdminRights(change_info=True)),
-                    max_quantity=1
-                )
-            ]
+            )
         ]
+    ],
+    resize_keyboard=True
+)
 
-        reply_markup = ReplyKeyboardMarkup(
-            rows=[KeyboardButtonRow(buttons=row) for row in keyboard],
-            resize=True,
-            single_use=False
-        )
+@bot.on_message(filters.command("start"))
+async def start(bot, message):
+    await message.reply_text(
+        "👋 <b>Welcome to Chat ID Finder Bot!</b> 🆔\n\n"
+        "✅ <b>Fetch Any Chat ID Instantly!</b>\n\n"
+        "🔧 <b>How to Use?</b>\n"
+        "1️⃣ Click the buttons below to share a chat or user.\n"
+        "2️⃣ Receive the unique ID instantly.\n\n"
+        "💎 <b>Features:</b>\n"
+        "✅ Supports users, bots, private/public groups & channels\n"
+        "⚡ Fast and reliable\n\n"
+        "<blockquote>🛠 Made with ❤️ By @ItsSmartDev</blockquote>",
+        reply_markup=menu_buttons
+    )
 
-        try:
-            await client.send_message(
-                chat_id,
-                welcome_text,
-                parse_mode='html',
-                link_preview=False,
-                buttons=reply_markup
-            )
-            logging.info("Sent welcome message with keyboard")
-        except Exception as e:
-            logging.error(f"Failed to send welcome message: {str(e)}")
-            await client.send_message(
-                chat_id,
-                welcome_text,
-                parse_mode='html',
-                link_preview=False,
-                buttons=reply_markup
-            )
-            logging.info("Retried welcome message")
+@bot.on_message(filters.command("help"))
+async def help_command(bot, message):
+    await message.reply_text(
+        "🚀 <b>Chat ID Finder Bot Help Center</b> 🌟\n\n"
+        "🔍 <b>Need to grab a chat ID? We've got you covered!</b>\n\n"
+        "📋 <b>Commands & Features:</b>\n"
+        "👉 <code>/start</code> - Launch the bot and see the magic buttons! 🎮\n"
+        "👉 <code>/help</code> - Show this awesome help message 📖\n"
+        "👉 <b>Forward Messages</b> - Send any forwarded message to reveal its source ID! 🔎\n"
+        "👉 <b>Buttons</b> - Pick from users, bots, groups, or channels to get IDs instantly ⚡\n\n"
+        "💡 <b>Pro Tip:</b> Forward a message from any chat, and I'll dig up the details! 🕵️\n\n"
+        "📩 <b>Got questions?</b> Ping @ItsSmartDev for support! 😎\n"
+        "<blockquote>🛠 Crafted with ❤️ By @ItsSmartDev</blockquote>"
+    )
 
-    elif text == '/me':
-        logging.info("Processing /me command")
-        response = f"👤 <b>Your Info</b>\n🆔 ID: <code>{sender.id}</code>"
-        try:
-            await client.send_message(
-                chat_id,
-                response,
-                parse_mode='html'
-            )
-            logging.info(f"Sent /me response: {response}")
-        except Exception as e:
-            logging.error(f"Failed to send /me response: {str(e)}")
-
-    elif text == '/help':
-        logging.info("Processing /help command")
-        help_text = (
-            "<b>Available Commands:</b>\n\n"
-            "<b>/start</b> - Start the bot and get the main menu with options to fetch IDs for users, bots, groups, channels, and your owned or admin chats.\n"
-            "<b>/me</b> - Get your own Telegram user ID.\n"
-            "<b>/help</b> - Show this help message with command explanations."
-        )
-        try:
-            await client.send_message(
-                chat_id,
-                help_text,
-                parse_mode='html'
-            )
-            logging.info("Sent /help message")
-        except Exception as e:
-            logging.error(f"Failed to send /help message: {str(e)}")
-
-    elif message.forward is not None:
-        peer = message.forward.saved_from_peer or message.forward.from_id
-        if peer:
-            chat_id_forwarded = utils.get_peer_id(peer)
-            try:
-                entity = await client.get_entity(peer)
-                if isinstance(entity, User):
-                    chat_name = entity.first_name or "User"
-                elif isinstance(entity, (Chat, Channel)):
-                    chat_name = entity.title
-                else:
-                    chat_name = "Unknown"
-                response = (
-                    f"<b>Forward Message Detected</b>\n"
-                    f"<b>Chat Name {chat_name}</b>\n"
-                    f"<b>ChatID {chat_id_forwarded}</b>"
+@bot.on_message(filters.private & filters.forwarded)
+async def handle_forwarded_message(bot, message):
+    try:
+        if hasattr(message, "forward_origin") and message.forward_origin:
+            origin = message.forward_origin
+            if hasattr(origin, "sender_user") and origin.sender_user:
+                # Forwarded from a user or bot
+                user = origin.sender_user
+                user_id = user.id
+                first_name = user.first_name
+                last_name = user.last_name or ""
+                username = f"@{user.username}" if user.username else "No username"
+                user_type = "Bot" if user.username and user.username.lower().endswith("bot") else "User"
+                await message.reply_text(
+                    f"<b>Forwarded {user_type} Info</b>\n"
+                    f"Type: <code>{user_type}</code>\n"
+                    f"ID: <code>{user_id}</code>\n"
+                    f"Name: <code>{first_name} {last_name}</code>\n"
+                    f"Username: <code>{username}</code>"
                 )
-                try:
-                    await client.send_message(
-                        chat_id,
-                        response,
-                        parse_mode='html'
-                    )
-                    logging.info(f"Sent forwarded message response: {response}")
-                except Exception as e:
-                    logging.error(f"Failed to send forwarded message response: {str(e)}")
-                    await client.send_message(
-                        chat_id,
-                        response,
-                        parse_mode='html'
-                    )
-                    logging.info("Retried forwarded message response")
-            except ValueError:
-                response = "❌ <b>Sorry, Forward Method Not Supported For Private Chats</b>"
-                await client.send_message(chat_id, response, parse_mode='html')
-                logging.info(f"Sent response: {response}")
-        else:
-            logging.info("Forwarded message but no peer found")
-
-@client.on(events.Raw)
-async def handle_raw_update(update):
-    logging.info(f"Received raw update: {update}")
-
-    if isinstance(update, UpdateNewMessage) and isinstance(update.message, MessageService):
-        message = update.message
-        chat_id = message.peer_id.user_id if hasattr(message.peer_id, 'user_id') else message.peer_id.chat_id
-        logging.info(f"Service message detected: {message}")
-
-        if hasattr(message.action, 'button_id') and hasattr(message.action, 'peers'):
-            logging.info("Detected peer sharing action")
-            button_id = message.action.button_id
-            peers = message.action.peers
-
-            type_info = TYPES.get(button_id, {'name': 'Unknown'})
-            type_ = type_info['name']
-
-            if peers:
-                for peer in peers:
-                    logging.info(f"Processing shared peer: {peer}")
-                    try:
-                        if isinstance(peer, RequestedPeerUser):
-                            user_id = peer.user_id
-                            response = f"👤 <b>Shared {type_} Info</b>\n🆔 ID: <code>{user_id}</code>"
-                        elif isinstance(peer, RequestedPeerChat):
-                            chat_id_shared = -peer.chat_id
-                            response = f"💬 <b>Shared {type_} Info</b>\n🆔 ID: <code>{chat_id_shared}</code>"
-                        elif isinstance(peer, RequestedPeerChannel):
-                            channel_id = -1000000000000 - peer.channel_id
-                            response = f"💬 <b>Shared {type_} Info</b>\n🆔 ID: <code>{channel_id}</code>"
-                        else:
-                            response = "Looks Like I Don't Have Control Over The User"
-                            logging.warning("Unknown peer type encountered")
-
-                        try:
-                            await client.send_message(
-                                chat_id,
-                                response,
-                                parse_mode='html'
-                            )
-                            logging.info(f"Sent response: {response}")
-                        except Exception as e:
-                            logging.error(f"Failed to send peer sharing response: {str(e)}")
-                            await client.send_message(
-                                chat_id,
-                                response,
-                                parse_mode='html'
-                            )
-                            logging.info("Retried peer sharing response: {response}")
-                    except Exception as e:
-                        logging.error(f"Error processing peer: {str(e)}")
-                        response = "❌ Error fetching entity"
-                        await client.send_message(chat_id, response, parse_mode='html')
+            elif hasattr(origin, "chat") and origin.chat:
+                # Forwarded from a group or channel
+                chat = origin.chat
+                chat_id = chat.id
+                chat_name = chat.title or "Unnamed Chat"
+                chat_type = str(chat.type).replace("ChatType.", "").capitalize()
+                username = f"@{chat.username}" if chat.username else "No username"
+                await message.reply_text(
+                    f"<b>Forwarded Chat Info</b>\n"
+                    f"Type: <code>{chat_type}</code>\n"
+                    f"ID: <code>{chat_id}</code>\n"
+                    f"Name: <code>{chat_name}</code>\n"
+                    f"Username: <code>{username}</code>"
+                )
+            elif hasattr(origin, "sender_user_name") and origin.sender_user_name:
+                # Forwarded from a user with hidden profile
+                await message.reply_text(
+                    f"<b>Looks Like I Don't Have Control Over The User</b>\n"
+                    f"Forwarded from: <code>{origin.sender_user_name}</code>"
+                )
             else:
-                logging.warning("No peers found in the action")
+                # No forward info available
+                await message.reply_text(
+                    "<b>Looks Like I Don't Have Control Over The User</b>"
+                )
         else:
-            logging.info("Service message is not a peer sharing event")
+            # No forward info available
+            await message.reply_text(
+                "<b>Looks Like I Don't Have Control Over The User</b>"
+            )
+    except Exception:
+        # Catch any unexpected errors (e.g., API restrictions)
+        await message.reply_text(
+            "<b>Looks Like I Don't Have Control Over The User</b>"
+        )
 
-print("✅ Bot Is Up And Running On Telethon")
-client.run_until_disconnected()
+@bot.on_message(filters.private)
+async def handle_message(bot, message):
+    if getattr(message, "chats_shared", None):
+        if hasattr(message.chats_shared, "chats") and message.chats_shared.chats:
+            for chat in message.chats_shared.chats:
+                chat_id = chat.chat_id
+                chat_name = chat.name
+                chat_type = str(chat.chat_type).replace("ChatType.", "").capitalize()
+                await message.reply_text(
+                    f"<b>Shared Chat Info</b>\n"
+                    f"Type: <code>{chat_type}</code>\n"
+                    f"ID: <code>{chat_id}</code>\n"
+                    f"Name: <code>{chat_name}</code>"
+                )
+        elif hasattr(message.chats_shared, "users") and message.chats_shared.users:
+            for user in message.chats_shared.users:
+                user_id = user.user_id
+                first_name = user.first_name
+                last_name = user.last_name or ""
+                username = f"@{user.username}" if user.username else "No username"
+                if user.username and user.username.lower().endswith("bot"):
+                    user_type = "Bot"
+                else:
+                    user_type = "User"
+                await message.reply_text(
+                    f"<b>Shared {user_type} Info</b>\n"
+                    f"ID: <code>{user_id}</code>\n"
+                    f"Name: <code>{first_name} {last_name}</code>\n"
+                    f"Username: <code>{username}</code>"
+                )
+    else:
+        await message.reply_text("<b>Please use the provided buttons to share a group, bot, channel, or user.</b>")
+
+if __name__ == "__main__":
+    bot.run()
