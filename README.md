@@ -9,31 +9,33 @@
 </p>
 
 <p align="center">
-  <em>QuickInfoBot: an advanced Telegram bot script designed to fetch detailed information about shared users, bots, groups, and channels.</em>
+  <em>QuickInfoBot: an advanced Telegram bot script designed to fetch detailed info about shared users, bots, groups, and channels in seconds.</em>
 </p>
 <hr>
 
 ## ✨ Features
 
-- 👤 Fetch information about users and bot.
-- 📋 Fetch information about private and public groups.
-- 📢 Fetch information about private and public channel.
+* 👤 **Users & Bots**: Retrieve ID, name, and username of any user or bot.
+* 🌐 **Groups**: Get details about public and private groups.
+* 📢 **Channels**: Fetch info on both public and private channels.
+* 🔒 **Secure**: Respect Telegram’s permissions and privacy settings.
+* ⚡ **Fast & Reliable**: Lightweight codebase for quick responses.
 
 ## Requirements
 
 Before you begin, ensure you have met the following requirements:
 
 - Python 3.8 or higher.
-- `telethon` librarie.
+- `pyrofork` librarie.
 - A Telegram bot token (you can get one from [@BotFather](https://t.me/BotFather) on Telegram).
 - API ID and Hash: You can get these by creating an application on [my.telegram.org](https://my.telegram.org).
 
 ## Installation
 
-To install `telethon` run the following command:
+To install `pyrofork` run the following command:
 
 ```bash
-pip install telethon
+pip install pyrofork
 ```
 
 **Note: If you previously installed `pyrogram`, uninstall it before installing `pyrofork`.**
