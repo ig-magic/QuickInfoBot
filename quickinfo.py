@@ -1,30 +1,20 @@
-"""
-Author: Bisnu Ray
-Telegram: https://t.me/SmartBisnuBio
-"""
-
 from pyrogram import Client, filters
 from pyrogram.enums import ParseMode
 from pyrogram.types import (
     KeyboardButton,
     ReplyKeyboardMarkup,
-    RequestPeerTypeChat,
     RequestPeerTypeUser,
-    RequestPeerTypeChannel
+    RequestPeerTypeChannel,
+    RequestPeerTypeChat
 )
-
-from config import (
-    API_ID,
-    API_HASH,
-    BOT_TOKEN
-)
+from config import API_ID, API_HASH, BOT_TOKEN
 
 bot = Client(
     "quickinfo",
     api_id=API_ID,
     api_hash=API_HASH,
     bot_token=BOT_TOKEN,
-    parse_mode=ParseMode.HTML
+    parse_mode=ParseMode.MARKDOWN
 )
 
 menu_buttons = ReplyKeyboardMarkup(
@@ -51,10 +41,11 @@ menu_buttons = ReplyKeyboardMarkup(
                 )
             ),
             KeyboardButton(
-                "🔒 Private Channel",
-                request_chat=RequestPeerTypeChannel(
-                    button_id=4,
-                    is_username=False,
+                "👤 Premium Users",
+                request_user=RequestPeerTypeUser(
+                    button_id=3,
+                    is_bot=False,
+                    is_premium=True,
                     max=1,
                     is_name_requested=True,
                     is_username_requested=True
@@ -63,20 +54,10 @@ menu_buttons = ReplyKeyboardMarkup(
         ],
         [
             KeyboardButton(
-                " 🌐Public Channel",
+                "🌐 Public Channel",
                 request_chat=RequestPeerTypeChannel(
                     button_id=5,
                     is_username=True,
-                    max=1,
-                    is_name_requested=True,
-                    is_username_requested=True
-                )
-            ),
-            KeyboardButton(
-                "🔒 Private Group",
-                request_chat=RequestPeerTypeChat(
-                    button_id=6,
-                    is_username=False,
                     max=1,
                     is_name_requested=True,
                     is_username_requested=True
@@ -87,6 +68,28 @@ menu_buttons = ReplyKeyboardMarkup(
                 request_chat=RequestPeerTypeChat(
                     button_id=7,
                     is_username=True,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            )
+        ],
+        [
+            KeyboardButton(
+                "🔒 Private Channel",
+                request_chat=RequestPeerTypeChannel(
+                    button_id=4,
+                    is_username=False,
+                    max=1,
+                    is_name_requested=True,
+                    is_username_requested=True
+                )
+            ),
+            KeyboardButton(
+                "🔒 Private Group",
+                request_chat=RequestPeerTypeChat(
+                    button_id=6,
+                    is_username=False,
                     max=1,
                     is_name_requested=True,
                     is_username_requested=True
@@ -122,31 +125,31 @@ menu_buttons = ReplyKeyboardMarkup(
 @bot.on_message(filters.command("start"))
 async def start(bot, message):
     await message.reply_text(
-        "👋 <b>Welcome to Chat ID Finder Bot!</b> 🆔\n\n"
-        "✅ <b>Fetch Any Chat ID Instantly!</b>\n\n"
-        "🔧 <b>How to Use?</b>\n"
+        "**👋 Welcome to Chat ID Finder Bot!** 🆔\n\n"
+        "**✅ Fetch Any Chat ID Instantly!**\n\n"
+        "🔧 **How to Use?**\n"
         "1️⃣ Click the buttons below to share a chat or user.\n"
         "2️⃣ Receive the unique ID instantly.\n\n"
-        "💎 <b>Features:</b>\n"
-        "✅ Supports users, bots, private/public groups & channels\n"
-        "⚡ Fast and reliable\n\n"
-        "<blockquote>🛠 Made with ❤️ By @ItsSmartDev</blockquote>",
+        "💎 **Features:**\n"
+        "- Supports users, bots, private/public groups & channels\n"
+        "- Fast and reliable\n\n"
+        "> 🛠 Made with ❤️ By @ItsSmartDev",
         reply_markup=menu_buttons
     )
 
 @bot.on_message(filters.command("help"))
 async def help_command(bot, message):
     await message.reply_text(
-        "🚀 <b>Chat ID Finder Bot Help Center</b> 🌟\n\n"
-        "🔍 <b>Need to grab a chat ID? We've got you covered!</b>\n\n"
-        "📋 <b>Commands & Features:</b>\n"
-        "👉 <code>/start</code> - Launch the bot and see the magic buttons! 🎮\n"
-        "👉 <code>/help</code> - Show this awesome help message 📖\n"
-        "👉 <b>Forward Messages</b> - Send any forwarded message to reveal its source ID! 🔎\n"
-        "👉 <b>Buttons</b> - Pick from users, bots, groups, or channels to get IDs instantly ⚡\n\n"
-        "💡 <b>Pro Tip:</b> Forward a message from any chat, and I'll dig up the details! 🕵️\n\n"
-        "📩 <b>Got questions?</b> Ping @ItsSmartDev for support! 😎\n"
-        "<blockquote>🛠 Crafted with ❤️ By @ItsSmartDev</blockquote>"
+        "**🚀 Chat ID Finder Bot Help Center** 🌟\n\n"
+        "🔍 **Need to grab a chat ID? We've got you covered!**\n\n"
+        "📋 **Commands & Features:**\n"
+        "👉 `/start` - Launch the bot and see the magic buttons! 🎮\n"
+        "👉 `/help` - Show this awesome help message 📖\n"
+        "👉 **Forward Messages** - Send any forwarded message to reveal its source ID! 🔎\n"
+        "👉 **Buttons** - Pick from users, bots, groups, or channels to get IDs instantly ⚡\n\n"
+        "💡 **Pro Tip:** Forward a message from any chat, and I'll dig up the details! 🕵️\n\n"
+        "📩 **Got questions?** Ping @ItsSmartDev for support! 😎\n"
+        "> 🛠 Crafted with ❤️ By @ItsSmartDev"
     )
 
 @bot.on_message(filters.private & filters.forwarded)
@@ -155,7 +158,6 @@ async def handle_forwarded_message(bot, message):
         if hasattr(message, "forward_origin") and message.forward_origin:
             origin = message.forward_origin
             if hasattr(origin, "sender_user") and origin.sender_user:
-                # Forwarded from a user or bot
                 user = origin.sender_user
                 user_id = user.id
                 first_name = user.first_name
@@ -163,46 +165,41 @@ async def handle_forwarded_message(bot, message):
                 username = f"@{user.username}" if user.username else "No username"
                 user_type = "Bot" if user.username and user.username.lower().endswith("bot") else "User"
                 await message.reply_text(
-                    f"<b>Forwarded {user_type} Info</b>\n"
-                    f"Type: <code>{user_type}</code>\n"
-                    f"ID: <code>{user_id}</code>\n"
-                    f"Name: <code>{first_name} {last_name}</code>\n"
-                    f"Username: <code>{username}</code>"
+                    f"**Forwarded {user_type} Info**\n"
+                    f"Type: `{user_type}`\n"
+                    f"ID: `{user_id}`\n"
+                    f"Name: `{first_name} {last_name}`\n"
+                    f"Username: `{username}`"
                 )
             elif hasattr(origin, "chat") and origin.chat:
-                # Forwarded from a group or channel
                 chat = origin.chat
                 chat_id = chat.id
                 chat_name = chat.title or "Unnamed Chat"
                 chat_type = str(chat.type).replace("ChatType.", "").capitalize()
                 username = f"@{chat.username}" if chat.username else "No username"
                 await message.reply_text(
-                    f"<b>Forwarded Chat Info</b>\n"
-                    f"Type: <code>{chat_type}</code>\n"
-                    f"ID: <code>{chat_id}</code>\n"
-                    f"Name: <code>{chat_name}</code>\n"
-                    f"Username: <code>{username}</code>"
+                    "**Forwarded Chat Info**\n"
+                    f"Type: `{chat_type}`\n"
+                    f"ID: `{chat_id}`\n"
+                    f"Name: `{chat_name}`\n"
+                    f"Username: `{username}`"
                 )
             elif hasattr(origin, "sender_user_name") and origin.sender_user_name:
-                # Forwarded from a user with hidden profile
                 await message.reply_text(
-                    f"<b>Looks Like I Don't Have Control Over The User</b>\n"
-                    f"Forwarded from: <code>{origin.sender_user_name}</code>"
+                    "**Looks Like I Don't Have Control Over The User**\n"
+                    f"Forwarded from: `{origin.sender_user_name}`"
                 )
             else:
-                # No forward info available
                 await message.reply_text(
-                    "<b>Looks Like I Don't Have Control Over The User</b>"
+                    "**Looks Like I Don't Have Control Over The User**"
                 )
         else:
-            # No forward info available
             await message.reply_text(
-                "<b>Looks Like I Don't Have Control Over The User</b>"
+                "**Looks Like I Don't Have Control Over The User**"
             )
     except Exception:
-        # Catch any unexpected errors (e.g., API restrictions)
         await message.reply_text(
-            "<b>Looks Like I Don't Have Control Over The User</b>"
+            "**Looks Like I Don't Have Control Over The User**"
         )
 
 @bot.on_message(filters.private)
@@ -214,10 +211,10 @@ async def handle_message(bot, message):
                 chat_name = chat.name
                 chat_type = str(chat.chat_type).replace("ChatType.", "").capitalize()
                 await message.reply_text(
-                    f"<b>Shared Chat Info</b>\n"
-                    f"Type: <code>{chat_type}</code>\n"
-                    f"ID: <code>{chat_id}</code>\n"
-                    f"Name: <code>{chat_name}</code>"
+                    "**Shared Chat Info**\n"
+                    f"Type: `{chat_type}`\n"
+                    f"ID: `{chat_id}`\n"
+                    f"Name: `{chat_name}`"
                 )
         elif hasattr(message.chats_shared, "users") and message.chats_shared.users:
             for user in message.chats_shared.users:
@@ -225,18 +222,17 @@ async def handle_message(bot, message):
                 first_name = user.first_name
                 last_name = user.last_name or ""
                 username = f"@{user.username}" if user.username else "No username"
-                if user.username and user.username.lower().endswith("bot"):
-                    user_type = "Bot"
-                else:
-                    user_type = "User"
+                user_type = "Bot" if user.username and user.username.lower().endswith("bot") else "User"
                 await message.reply_text(
-                    f"<b>Shared {user_type} Info</b>\n"
-                    f"ID: <code>{user_id}</code>\n"
-                    f"Name: <code>{first_name} {last_name}</code>\n"
-                    f"Username: <code>{username}</code>"
+                    f"**Shared {user_type} Info**\n"
+                    f"ID: `{user_id}`\n"
+                    f"Name: `{first_name} {last_name}`\n"
+                    f"Username: `{username}`"
                 )
     else:
-        await message.reply_text("<b>Please use the provided buttons to share a group, bot, channel, or user.</b>")
+        await message.reply_text(
+            "**Please use the provided buttons to share a group, bot, channel, or user.**"
+        )
 
 if __name__ == "__main__":
     bot.run()
