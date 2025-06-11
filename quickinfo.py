@@ -41,7 +41,7 @@ menu_buttons = ReplyKeyboardMarkup(
                 )
             ),
             KeyboardButton(
-                "👤 Premium Users",
+                "⭐ Premium",
                 request_user=RequestPeerTypeUser(
                     button_id=3,
                     is_bot=False,
