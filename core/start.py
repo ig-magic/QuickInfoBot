@@ -18,6 +18,6 @@ async def start(bot: Client, message):
         "💎 **Features:**\n"
         "- Supports users, bots, private/public groups & channels\n"
         "- Fast and reliable\n\n"
-        "> 🛠 Made with ❤️ By @TheSmartDev",
+        "> 🛠 Made with ❤️ By @itsSmartDev",
         reply_markup=menu_buttons
     )
