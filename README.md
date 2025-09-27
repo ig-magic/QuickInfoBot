@@ -53,7 +53,7 @@ pip install -r requirements.txt
 ```sh
 git clone https://github.com/bisnuray/QuickInfoBot
 cd QuickInfoBot
-python bot.py
+python main.py
 ```
 
 ## How It Works
@@ -76,4 +76,5 @@ python bot.py
 - Telegram: [@itsSmartDev](https://t.me/itsSmartDev)
 
 Feel free to reach out if you have any questions or feedback.
+
 
