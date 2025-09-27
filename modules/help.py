@@ -4,7 +4,7 @@ from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from utils import LOGGER
 from bot import bot
-from config import COMMAND_PREFIX
+from config import COMMAND_PREFIX,ADMIN_ID
 
 HELP_TEXT = (
     "**Here Are QuickInfo Bot Options 👇:**\n\n"
@@ -17,7 +17,7 @@ FORWARD_TEXT = (
     "2️⃣ Forward it to me privately.\n"
     "3️⃣ I’ll instantly reveal the ID, name, and more! ⚡\n\n"
     "💡 **Pro Tip:** Works with any forwarded message, even from private chats! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 GETME_TEXT = (
@@ -27,7 +27,7 @@ GETME_TEXT = (
     "2️⃣ I’ll send your user ID, name, and username instantly! ⚡\n"
     "3️⃣ If you have a profile photo, I’ll show it too! 📸\n\n"
     "💡 **Pro Tip:** Use the button in the reply to copy your ID! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 SHAREDCHAT_TEXT = (
@@ -37,7 +37,7 @@ SHAREDCHAT_TEXT = (
     "2️⃣ Pick a user, bot, group, or channel to share.\n"
     "3️⃣ I’ll fetch the ID, name, and username instantly! ⚡\n\n"
     "💡 **Pro Tip:** Works for public and private chats, plus bots and premium users! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 ADMINS_TEXT = (
@@ -47,7 +47,7 @@ ADMINS_TEXT = (
     "2️⃣ Use the buttons to share a channel or group where you have admin rights.\n"
     "3️⃣ I’ll reveal the ID and details instantly! ⚡\n\n"
     "💡 **Pro Tip:** Perfect for managing your admin roles! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 OWNCHATS_TEXT = (
@@ -57,7 +57,7 @@ OWNCHATS_TEXT = (
     "2️⃣ Use the buttons to share a channel or group you own.\n"
     "3️⃣ I’ll send the ID and details in a snap! ⚡\n\n"
     "💡 **Pro Tip:** Great for keeping track of your own chats! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 USERNAME_TEXT = (
@@ -67,7 +67,7 @@ USERNAME_TEXT = (
     "2️⃣ I’ll fetch their ID, name, and other details instantly! ⚡\n"
     "3️⃣ If they have a profile photo, I’ll show it too! 📸\n\n"
     "💡 **Pro Tip:** Works for any public username, even bots! 😎\n\n"
-    "> 🛠 Crafted with ❤️ By @TheSmartDev"
+    "> 🛠 Crafted with ❤️ By @itsSmartDev"
 )
 
 MAIN_MENU_BUTTONS = InlineKeyboardMarkup(
@@ -86,10 +86,10 @@ MAIN_MENU_BUTTONS = InlineKeyboardMarkup(
         ],
         [
             InlineKeyboardButton("👤 Username", callback_data="help_username"),
-            InlineKeyboardButton("🔧 Dev", user_id=7666341631)
+            InlineKeyboardButton("🔧 Dev", user_id=ADMIN_ID)
         ],
         [
-            InlineKeyboardButton("🔔 Join For Updates", url="t.me/TheSmartDev")
+            InlineKeyboardButton("🔔 Join For Updates", url="https://t.me/itsSmartDev")
         ]
     ]
 )
