@@ -24,16 +24,16 @@
 Before you begin, ensure you have met the following requirements:
 
 - Python 3.8 or higher.
-- `telethon` librarie.
+- `pyrofork` library.
 - A Telegram bot token (you can get one from [@BotFather](https://t.me/BotFather) on Telegram).
 - API ID and Hash: You can get these by creating an application on [my.telegram.org](https://my.telegram.org).
 
 ## Installation
 
-To install `telethon` run the following command:
+To install `pyrofork` run the following command:
 
 ```bash
-pip install telethon
+pip install -r requirements.txt
 ```
 
 **Note: If you previously installed `pyrogram`, uninstall it before installing `pyrofork`.**
@@ -45,13 +45,25 @@ pip install telethon
    - **`API_ID`**: Your API ID from [my.telegram.org](https://my.telegram.org).
    - **`API_HASH`**: Your API Hash from [my.telegram.org](https://my.telegram.org).
    - **`BOT_TOKEN`**: The token you obtained from [@BotFather](https://t.me/BotFather).
-
+   - **`ADMIN_ID`**: Your User ID Which Will Receive Donation Notifications. Get From [@SmartUtilBot](t.me/SmartUtilBot)
 ## Deploy the Bot
 
 ```sh
 git clone https://github.com/bisnuray/QuickInfoBot
 cd QuickInfoBot
-python quickinfo.py
+pip3 install -r requirements.txt
+python3 main.py
+```
+
+## Deploy the Bot With Screen To Run In Background
+
+```sh
+git clone https://github.com/bisnuray/QuickInfoBot
+cd QuickInfoBot
+pip3 install -r requirements.txt
+apt install screen
+screen -S QuickInfoBot
+python3 main.py
 ```
 
 ## How It Works
