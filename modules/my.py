@@ -14,6 +14,6 @@ async def my_command(bot: Client, message):
         "🔧 **How to Use?**\n"
         "1️⃣ Click the buttons below to share your channel or group.\n"
         "2️⃣ Receive the unique ID instantly.\n\n"
-        "> 🛠 Made with ❤️ By @TheSmartDev",
+        "> 🛠 Made with ❤️ By @itsSmartDev",
         reply_markup=my_buttons
     )
