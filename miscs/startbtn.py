@@ -5,8 +5,7 @@ from pyrogram.types import (
     ReplyKeyboardMarkup,
     RequestPeerTypeUser,
     RequestPeerTypeChannel,
-    RequestPeerTypeChat,
-    ChatPrivileges
+    RequestPeerTypeChat
 )
 from utils import LOGGER
 
@@ -99,77 +98,8 @@ menu_buttons = ReplyKeyboardMarkup(
             )
         ],
         [
-            KeyboardButton(
-                "👥 Your Group",
-                request_chat=RequestPeerTypeChat(
-                    button_id=8,
-                    is_creator=True,
-                    max=1,
-                    is_name_requested=True,
-                    is_username_requested=True,
-                    is_photo_requested=True
-                )
-            ),
-            KeyboardButton(
-                "📢 Your Channel",
-                request_chat=RequestPeerTypeChannel(
-                    button_id=9,
-                    is_creator=True,
-                    max=1,
-                    is_name_requested=True,
-                    is_username_requested=True,
-                    is_photo_requested=True
-                )
-            )
-        ],
-        [
-            KeyboardButton(
-                "👥 Admin",
-                request_chat=RequestPeerTypeChat(
-                    button_id=11,
-                    user_privileges=ChatPrivileges(
-                        can_manage_chat=True,
-                        can_delete_messages=True,
-                        can_manage_video_chats=True,
-                        can_restrict_members=True,
-                        can_promote_members=True,
-                        can_change_info=True,
-                        can_invite_users=True,
-                        can_pin_messages=True,
-                        can_manage_topics=True
-                    ),
-                    max=1,
-                    is_name_requested=True,
-                    is_username_requested=True,
-                    is_photo_requested=True
-                )
-            ),
-            KeyboardButton(
-                "📢 Channel Admin",
-                request_chat=RequestPeerTypeChannel(
-                    button_id=10,
-                    user_privileges=ChatPrivileges(
-                        can_manage_chat=True,
-                        can_delete_messages=True,
-                        can_manage_video_chats=True,
-                        can_restrict_members=True,
-                        can_promote_members=True,
-                        can_change_info=True,
-                        can_post_messages=True,
-                        can_edit_messages=True,
-                        can_invite_users=True,
-                        can_pin_messages=True,
-                        can_manage_topics=True,
-                        can_post_stories=True,
-                        can_edit_stories=True,
-                        can_delete_stories=True
-                    ),
-                    max=1,
-                    is_name_requested=True,
-                    is_username_requested=True,
-                    is_photo_requested=True
-                )
-            )
+            KeyboardButton("👥 Admins Chat"),
+            KeyboardButton("👑 Owner Chat")
         ]
     ],
     resize_keyboard=True,
