@@ -26,7 +26,6 @@
 Before you begin, ensure you have met the following requirements:
 
 - Python 3.8 or higher.
-- `pyrofork` librarie.
 - A Telegram bot token (you can get one from [@BotFather](https://t.me/BotFather) on Telegram).
 - API ID and Hash: You can get these by creating an application on [my.telegram.org](https://my.telegram.org).
 
@@ -77,3 +76,4 @@ python bot.py
 - Telegram: [@itsSmartDev](https://t.me/itsSmartDev)
 
 Feel free to reach out if you have any questions or feedback.
+
