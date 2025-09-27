@@ -33,6 +33,9 @@ my_buttons = ReplyKeyboardMarkup(
                     is_photo_requested=True
                 )
             )
+        ],
+        [
+            KeyboardButton("🔙 Back")
         ]
     ],
     resize_keyboard=True,
