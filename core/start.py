@@ -10,7 +10,7 @@ from config import COMMAND_PREFIX
 async def start(bot: Client, message):
     LOGGER.info("Start command received")
     await message.reply_text(
-        "**👋 Welcome to Chat ID Finder Bot!** 🆔\n\n"
+        "**👋 Welcome to Quick Info Bot!** 🆔\n\n"
         "**✅ Fetch Any Chat ID Instantly!**\n\n"
         "🔧 **How to Use?**\n"
         "1️⃣ Click the buttons below to share a chat or user.\n"
